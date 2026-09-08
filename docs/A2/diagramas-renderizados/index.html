@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Diagramas de Sequência de Projeto - Grupo 24</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Arial, Helvetica, sans-serif;
+      background: Canvas;
+      color: CanvasText;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px;
+    }
+
+    main {
+      max-width: 1500px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.5rem, 4vw, 2.25rem);
+    }
+
+    .subtitle {
+      margin: 0 0 18px;
+      color: GrayText;
+    }
+
+    .notice {
+      margin: 0 0 20px;
+      padding: 12px 14px;
+      border-left: 4px solid #3478c6;
+      background: color-mix(in srgb, #3478c6 12%, Canvas);
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .tabs button {
+      min-height: 42px;
+      padding: 9px 14px;
+      border: 1px solid ButtonBorder;
+      border-radius: 7px;
+      background: ButtonFace;
+      color: ButtonText;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .tabs button[aria-selected="true"] {
+      border-color: #3478c6;
+      background: #3478c6;
+      color: white;
+    }
+
+    .panel[hidden] {
+      display: none;
+    }
+
+    .panel h2 {
+      margin: 0 0 12px;
+    }
+
+    .diagram-frame {
+      overflow: auto;
+      padding: 14px;
+      border: 1px solid ButtonBorder;
+      border-radius: 8px;
+      background: white;
+    }
+
+    .diagram-frame img {
+      display: block;
+      width: max-content;
+      min-width: 100%;
+      height: auto;
+      margin: 0 auto;
+    }
+
+    .open-link {
+      display: inline-block;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 700px) {
+      body {
+        padding: 14px;
+      }
+
+      .tabs {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .tabs button {
+        width: 100%;
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Diagramas de Sequência de Projeto</h1>
+    <p class="subtitle">Sistema de Agendamento de Consultas - Grupo 24</p>
+
+    <p class="notice">
+      Visualização preliminar baseada em uma arquitetura web genérica em camadas.
+      Os nomes das classes deverão ser alinhados ao diagrama de classes de projeto do grupo.
+    </p>
+
+    <nav class="tabs" role="tablist" aria-label="Casos de uso">
+      <button id="tab-uc02" role="tab" aria-selected="true" aria-controls="panel-uc02">UC02 - Agendar</button>
+      <button id="tab-uc03-paciente" role="tab" aria-selected="false" aria-controls="panel-uc03-paciente">UC03 - Paciente</button>
+      <button id="tab-uc03-medico" role="tab" aria-selected="false" aria-controls="panel-uc03-medico">UC03 - Médico</button>
+      <button id="tab-uc06" role="tab" aria-selected="false" aria-controls="panel-uc06">UC06 - Agenda</button>
+      <button id="tab-uc07" role="tab" aria-selected="false" aria-controls="panel-uc07">UC07 - Painel</button>
+    </nav>
+
+    <section id="panel-uc02" class="panel" role="tabpanel" aria-labelledby="tab-uc02">
+      <h2>UC02 - Agendar consulta</h2>
+      <div class="diagram-frame">
+        <img src="Diagramas_Sequencia_Projeto.svg" alt="Diagrama de sequência de projeto do caso de uso Agendar consulta">
+      </div>
+      <a class="open-link" href="Diagramas_Sequencia_Projeto.svg" target="_blank">Abrir somente o diagrama</a>
+    </section>
+
+    <section id="panel-uc03-paciente" class="panel" role="tabpanel" aria-labelledby="tab-uc03-paciente" hidden>
+      <h2>UC03 - Cancelar consulta pelo paciente</h2>
+      <div class="diagram-frame">
+        <img src="Diagramas_Sequencia_Projeto_001.svg" alt="Diagrama de sequência de projeto do cancelamento solicitado pelo paciente">
+      </div>
+      <a class="open-link" href="Diagramas_Sequencia_Projeto_001.svg" target="_blank">Abrir somente o diagrama</a>
+    </section>
+
+    <section id="panel-uc03-medico" class="panel" role="tabpanel" aria-labelledby="tab-uc03-medico" hidden>
+      <h2>UC03 - Cancelar consulta pelo médico</h2>
+      <div class="diagram-frame">
+        <img src="Diagramas_Sequencia_Projeto_002.svg" alt="Diagrama de sequência de projeto do cancelamento solicitado pelo médico">
+      </div>
+      <a class="open-link" href="Diagramas_Sequencia_Projeto_002.svg" target="_blank">Abrir somente o diagrama</a>
+    </section>
+
+    <section id="panel-uc06" class="panel" role="tabpanel" aria-labelledby="tab-uc06" hidden>
+      <h2>UC06 - Manter agenda de atendimento</h2>
+      <div class="diagram-frame">
+        <img src="Diagramas_Sequencia_Projeto_003.svg" alt="Diagrama de sequência de projeto da manutenção da agenda de atendimento">
+      </div>
+      <a class="open-link" href="Diagramas_Sequencia_Projeto_003.svg" target="_blank">Abrir somente o diagrama</a>
+    </section>
+
+    <section id="panel-uc07" class="panel" role="tabpanel" aria-labelledby="tab-uc07" hidden>
+      <h2>UC07 - Consultar pacientes do dia</h2>
+      <div class="diagram-frame">
+        <img src="Diagramas_Sequencia_Projeto_004.svg" alt="Diagrama de sequência de projeto do painel diário do médico">
+      </div>
+      <a class="open-link" href="Diagramas_Sequencia_Projeto_004.svg" target="_blank">Abrir somente o diagrama</a>
+    </section>
+  </main>
+
+  <script>
+    const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
+    const panels = Array.from(document.querySelectorAll('[role="tabpanel"]'));
+
+    function activateTab(tab) {
+      tabs.forEach((item) => item.setAttribute('aria-selected', String(item === tab)));
+      panels.forEach((panel) => {
+        panel.hidden = panel.id !== tab.getAttribute('aria-controls');
+      });
+    }
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => activateTab(tab));
+    });
+  </script>
+</body>
+</html>
