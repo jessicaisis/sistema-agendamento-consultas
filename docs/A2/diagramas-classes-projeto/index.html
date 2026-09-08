@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Diagramas de Classes de Projeto - Grupo 24</title>
+  <style>
+    :root { color-scheme: light; --ink: #172b36; --accent: #b61945; --paper: #f4f6f8; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Segoe UI", Arial, sans-serif; color: var(--ink); background: var(--paper); }
+    header { padding: 32px max(24px, 5vw); color: white; background: linear-gradient(120deg, #172b36, #243f4c); border-top: 8px solid var(--accent); }
+    header h1 { margin: 0 0 8px; font-size: clamp(1.7rem, 4vw, 2.7rem); }
+    header p { margin: 0; max-width: 900px; line-height: 1.5; color: #e7eef2; }
+    main { width: min(1500px, 94vw); margin: 28px auto 56px; }
+    nav { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 22px; }
+    nav a { color: white; background: var(--accent); padding: 9px 14px; border-radius: 6px; text-decoration: none; font-weight: 600; }
+    article { margin: 0 0 28px; padding: 22px; border: 1px solid #d7dde1; border-radius: 10px; background: white; box-shadow: 0 4px 18px rgba(23, 43, 54, .08); }
+    article h2 { margin: 0 0 7px; color: var(--accent); }
+    article p { margin: 0 0 18px; line-height: 1.55; }
+    object { display: block; width: 100%; min-height: 620px; border: 1px solid #e0e5e8; background: white; }
+    .links { margin-top: 14px; display: flex; gap: 14px; }
+    .links a { color: #8d1235; font-weight: 600; }
+    footer { text-align: center; padding: 20px; color: #52646e; }
+    @media (max-width: 800px) { object { min-height: 420px; } article { padding: 14px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Diagramas de Classes de Projeto</h1>
+    <p>Sistema de Agendamento de Consultas - arquitetura Java com Spring Boot organizada em Controller, Service e Repository.</p>
+  </header>
+  <main>
+    <nav>
+      <a href="#dcp01">DCP01 - Consultas</a>
+      <a href="#dcp02">DCP02 - Agenda</a>
+      <a href="#dcp03">DCP03 - Painel</a>
+    </nav>
+    <article id="dcp01">
+      <h2>DCP01 - Agendamento e cancelamento</h2>
+      <p>Classes que realizam os casos de uso UC02 e UC03.</p>
+      <object data="rendered/svg/DCP01_Agendamento_Cancelamento.svg" type="image/svg+xml"></object>
+      <div class="links"><a href="rendered/svg/DCP01_Agendamento_Cancelamento.svg">Abrir SVG</a><a href="rendered/png/DCP01_Agendamento_Cancelamento.png">Abrir PNG</a></div>
+    </article>
+    <article id="dcp02">
+      <h2>DCP02 - Manutenção da agenda</h2>
+      <p>Classes que realizam o caso de uso UC06.</p>
+      <object data="rendered/svg/DCP02_Agenda_Atendimento.svg" type="image/svg+xml"></object>
+      <div class="links"><a href="rendered/svg/DCP02_Agenda_Atendimento.svg">Abrir SVG</a><a href="rendered/png/DCP02_Agenda_Atendimento.png">Abrir PNG</a></div>
+    </article>
+    <article id="dcp03">
+      <h2>DCP03 - Painel diário do médico</h2>
+      <p>Classes que realizam o caso de uso UC07.</p>
+      <object data="rendered/svg/DCP03_Painel_Medico.svg" type="image/svg+xml"></object>
+      <div class="links"><a href="rendered/svg/DCP03_Painel_Medico.svg">Abrir SVG</a><a href="rendered/png/DCP03_Painel_Medico.png">Abrir PNG</a></div>
+    </article>
+  </main>
+  <footer>Grupo 24 - Documento acadêmico de projeto de software</footer>
+</body>
+</html>

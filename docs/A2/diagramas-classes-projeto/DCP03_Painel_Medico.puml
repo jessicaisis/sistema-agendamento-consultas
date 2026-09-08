@@ -1,0 +1,62 @@
+@startuml
+title DCP03 - Painel Diário do Médico
+
+top to bottom direction
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam nodesep 24
+skinparam ranksep 34
+skinparam class {
+  BackgroundColor #FFFBE6
+  BorderColor #A61B3C
+  ArrowColor #A61B3C
+}
+
+package "Apresentação" #F5F7FA {
+  class PainelMedicoController <<RestController>> {
+    + consultarPainel(medicoId: Long, data: LocalDate): PainelDiarioDTO
+  }
+
+  class PainelDiarioDTO <<DTO>> {
+    + data: LocalDate
+    + consultas: List<Consulta>
+    + horariosLivres: List<HorarioAtendimento>
+    + horasPrevistas: Duration
+    + valorPrevisto: BigDecimal
+  }
+}
+
+package "Aplicação" #F5F7FA {
+  class PainelMedicoService <<Service>> {
+    + montarPainel(medicoId: Long, data: LocalDate): PainelDiarioDTO
+    - identificarHorariosLivres(horarios: List<HorarioAtendimento>, consultas: List<Consulta>): List<HorarioAtendimento>
+    - calcularHorasPrevistas(consultas: List<Consulta>): Duration
+    - calcularValorPrevisto(consultas: List<Consulta>): BigDecimal
+  }
+}
+
+package "Persistência" #F5F7FA {
+  interface ConsultaRepository <<Repository>> {
+    + findByMedicoIdAndDataAndStatus(medicoId: Long, data: LocalDate, status: StatusConsulta): List<Consulta>
+  }
+
+  interface HorarioAtendimentoRepository <<Repository>> {
+    + findByMedicoIdAndData(medicoId: Long, data: LocalDate): List<HorarioAtendimento>
+  }
+}
+
+package "Spring Data" #F5F7FA {
+  interface "CrudRepository<Consulta, Long>" as CrudConsulta <<framework>>
+  interface "CrudRepository<HorarioAtendimento, Long>" as CrudHorario <<framework>>
+}
+
+PainelMedicoController "1" --> "1" PainelMedicoService : painelMedicoService
+PainelMedicoService "1" --> "1" ConsultaRepository : consultaRepository
+PainelMedicoService "1" --> "1" HorarioAtendimentoRepository : horarioRepository
+
+CrudConsulta <|-- ConsultaRepository
+CrudHorario <|-- HorarioAtendimentoRepository
+
+@enduml

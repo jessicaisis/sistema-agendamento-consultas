@@ -1,0 +1,89 @@
+@startuml
+title DCP01 - Agendamento e Cancelamento de Consultas
+
+top to bottom direction
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam nodesep 24
+skinparam ranksep 34
+skinparam class {
+  BackgroundColor #FFFBE6
+  BorderColor #A61B3C
+  ArrowColor #A61B3C
+}
+
+package "Apresentação" #F5F7FA {
+  class ConsultaController <<RestController>> {
+    + listarHorariosDisponiveis(medicoId: Long, data: LocalDate): List<HorarioAtendimento>
+    + obterResumo(horarioId: Long): ConsultaResumoDTO
+    + agendar(pacienteId: Long, horarioId: Long): Consulta
+    + listarConsultasDoPaciente(pacienteId: Long): List<Consulta>
+    + listarConsultasDoMedico(medicoId: Long, data: LocalDate): List<Consulta>
+    + validarCancelamentoPaciente(consultaId: Long, pacienteId: Long): boolean
+    + cancelarPorPaciente(consultaId: Long, pacienteId: Long): void
+    + cancelarPorMedico(consultaId: Long, medicoId: Long): void
+  }
+}
+
+package "Aplicação" #F5F7FA {
+  class ConsultaService <<Service>> {
+    + consultarHorariosDisponiveis(medicoId: Long, data: LocalDate): List<HorarioAtendimento>
+    + obterResumo(horarioId: Long): ConsultaResumoDTO
+    + agendar(pacienteId: Long, horarioId: Long): Consulta
+    + listarConsultasDoPaciente(pacienteId: Long): List<Consulta>
+    + listarConsultasDoMedico(medicoId: Long, data: LocalDate): List<Consulta>
+    + validarCancelamentoPaciente(consultaId: Long, pacienteId: Long): boolean
+    + cancelarPorPaciente(consultaId: Long, pacienteId: Long): void
+    + cancelarPorMedico(consultaId: Long, medicoId: Long): void
+  }
+
+  class LembreteService <<Service>> {
+    + programarLembrete(consulta: Consulta): Lembrete
+    + cancelarPorConsulta(consultaId: Long): void
+  }
+
+  class NotificacaoService <<Service>> {
+    + notificarMedico(consulta: Consulta): void
+    + notificarPaciente(consulta: Consulta): void
+  }
+}
+
+package "Persistência" #F5F7FA {
+  interface ConsultaRepository <<Repository>> {
+    + existsByPacienteIdAndMedicoIdAndDataAndStatus(pacienteId: Long, medicoId: Long, data: LocalDate, status: StatusConsulta): boolean
+    + findByPacienteIdAndStatus(pacienteId: Long, status: StatusConsulta): List<Consulta>
+    + findByMedicoIdAndDataAndStatus(medicoId: Long, data: LocalDate, status: StatusConsulta): List<Consulta>
+    + findByIdAndPacienteId(consultaId: Long, pacienteId: Long): Optional<Consulta>
+    + findByIdAndMedicoId(consultaId: Long, medicoId: Long): Optional<Consulta>
+  }
+
+  interface HorarioAtendimentoRepository <<Repository>> {
+    + findDisponiveisByMedicoIdAndData(medicoId: Long, data: LocalDate): List<HorarioAtendimento>
+    + findDisponivelForUpdate(horarioId: Long): Optional<HorarioAtendimento>
+  }
+
+  interface LembreteRepository <<Repository>> {
+    + findByConsultaId(consultaId: Long): Optional<Lembrete>
+  }
+}
+
+package "Spring Data" #F5F7FA {
+  interface "CrudRepository<Consulta, Long>" as CrudConsulta <<framework>>
+  interface "CrudRepository<HorarioAtendimento, Long>" as CrudHorario <<framework>>
+  interface "CrudRepository<Lembrete, Long>" as CrudLembrete <<framework>>
+}
+
+ConsultaController "1" --> "1" ConsultaService : consultaService
+ConsultaService "1" --> "1" ConsultaRepository : consultaRepository
+ConsultaService "1" --> "1" HorarioAtendimentoRepository : horarioRepository
+ConsultaService "1" --> "1" LembreteService : lembreteService
+ConsultaService "1" --> "1" NotificacaoService : notificacaoService
+LembreteService "1" --> "1" LembreteRepository : lembreteRepository
+
+CrudConsulta <|-- ConsultaRepository
+CrudHorario <|-- HorarioAtendimentoRepository
+CrudLembrete <|-- LembreteRepository
+
+@enduml

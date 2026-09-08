@@ -1,0 +1,67 @@
+@startuml
+title DCP02 - Manutenção da Agenda de Atendimento
+
+top to bottom direction
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam nodesep 24
+skinparam ranksep 34
+skinparam class {
+  BackgroundColor #FFFBE6
+  BorderColor #A61B3C
+  ArrowColor #A61B3C
+}
+
+package "Apresentação" #F5F7FA {
+  class AgendaController <<RestController>> {
+    + obterAgenda(medicoId: Long): Agenda
+    + incluirPeriodo(medicoId: Long, dados: PeriodoAgendaRequest): HorarioAtendimento
+    + alterarPeriodo(medicoId: Long, periodoId: Long, dados: PeriodoAgendaRequest): HorarioAtendimento
+    + removerPeriodo(medicoId: Long, periodoId: Long): void
+  }
+}
+
+package "Aplicação" #F5F7FA {
+  class AgendaService <<Service>> {
+    + obterAgenda(medicoId: Long): Agenda
+    + incluirPeriodo(medicoId: Long, dados: PeriodoAgendaRequest): HorarioAtendimento
+    + alterarPeriodo(medicoId: Long, periodoId: Long, dados: PeriodoAgendaRequest): HorarioAtendimento
+    + removerPeriodo(medicoId: Long, periodoId: Long): void
+    - existeSobreposicao(agendaId: Long, dados: PeriodoAgendaRequest): boolean
+    - buscarConsultasAfetadas(periodoId: Long): List<Consulta>
+  }
+}
+
+package "Persistência" #F5F7FA {
+  interface AgendaRepository <<Repository>> {
+    + findByMedicoId(medicoId: Long): Optional<Agenda>
+  }
+
+  interface HorarioAtendimentoRepository <<Repository>> {
+    + findByAgendaIdOrderByDataAscHoraInicioAsc(agendaId: Long): List<HorarioAtendimento>
+    + existsSobreposicao(agendaId: Long, inicio: LocalDateTime, fim: LocalDateTime, periodoIgnoradoId: Long): boolean
+  }
+
+  interface ConsultaRepository <<Repository>> {
+    + findConsultasAgendadasByHorarioId(horarioId: Long): List<Consulta>
+  }
+}
+
+package "Spring Data" #F5F7FA {
+  interface "CrudRepository<Agenda, Long>" as CrudAgenda <<framework>>
+  interface "CrudRepository<HorarioAtendimento, Long>" as CrudHorario <<framework>>
+  interface "CrudRepository<Consulta, Long>" as CrudConsulta <<framework>>
+}
+
+AgendaController "1" --> "1" AgendaService : agendaService
+AgendaService "1" --> "1" AgendaRepository : agendaRepository
+AgendaService "1" --> "1" HorarioAtendimentoRepository : horarioRepository
+AgendaService "1" --> "1" ConsultaRepository : consultaRepository
+
+CrudAgenda <|-- AgendaRepository
+CrudHorario <|-- HorarioAtendimentoRepository
+CrudConsulta <|-- ConsultaRepository
+
+@enduml
